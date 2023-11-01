@@ -1,14 +1,16 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 class HorseTest {
     @Test
-    void constructorShouldThrowIllegalArgumentExceptionWhenNameIsNull() {
+    void testConstructorShouldThrowIllegalArgumentExceptionWhenNameIsNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> new Horse(null, 10, 10));
 
@@ -17,7 +19,7 @@ class HorseTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "  ", "\t", "\n", "\r\n"})
-    void constructorShouldThrowIllegalArgumentExceptionWhenEmptyOrWhitespace(String name) {
+    void testConstructorShouldThrowIllegalArgumentExceptionWhenEmptyOrWhitespace(String name) {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> new Horse(name, 10, 10));
 
@@ -25,7 +27,7 @@ class HorseTest {
     }
 
     @Test
-    void constructorShouldThrowIllegalArgumentExceptionWhenNegativeSecondParameter() {
+    void testConstructorShouldThrowIllegalArgumentExceptionWhenNegativeSecondParameter() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> new Horse("name", -1, 10));
 
@@ -33,7 +35,7 @@ class HorseTest {
     }
 
     @Test
-    void constructorShouldThrowIllegalArgumentExceptionWhenNegativeThirdParameter() {
+    void testConstructorShouldThrowIllegalArgumentExceptionWhenNegativeThirdParameter() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> new Horse("name", 10, -1));
 
@@ -59,7 +61,7 @@ class HorseTest {
     }
 
     @Test
-    public void getDistanceShouldReturnDistancePassedToConstructor() {
+    public void testGetDistanceShouldReturnDistancePassedToConstructor() {
         double expectedDistance = 10.0;
         Horse horse = new Horse("name", 10, expectedDistance);
 
@@ -68,7 +70,7 @@ class HorseTest {
     }
 
     @Test
-    public void getDistanceShouldReturnZeroWhenConstructedWithTwoParameters() {
+    public void testGetDistanceShouldReturnZeroWhenConstructedWithTwoParameters() {
         Horse horse = new Horse("name", 10);
 
         double resultDistance = horse.getDistance();
@@ -77,7 +79,7 @@ class HorseTest {
 
 
     @Test
-    public void moveShouldCallGetRandomDoubleWithCorrectParameters() {
+    public void testMoveShouldCallGetRandomDoubleWithCorrectParameters() {
         try (MockedStatic<Horse> mockStatic = Mockito.mockStatic(Horse.class)){
             Horse horse = new Horse("name", 10, 10);
             horse.move();
@@ -88,7 +90,7 @@ class HorseTest {
 
     @ParameterizedTest
     @ValueSource(doubles = {0.2, 0.9})
-    public void moveShouldUpdateDistanceBasedOnSpeedAndRandomValue(double randomValue) {
+    public void testMoveShouldUpdateDistanceBasedOnSpeedAndRandomValue(double randomValue) {
 
         try (MockedStatic<Horse> mockStatic = Mockito.mockStatic(Horse.class)){
             mockStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(randomValue);
