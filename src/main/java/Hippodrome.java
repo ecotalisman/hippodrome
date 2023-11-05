@@ -14,7 +14,7 @@ public class Hippodrome {
 
     public Hippodrome(List<Horse> horses) {
         if (isNull(horses)) {
-            LOGGER.error("Horses list is null");
+            LOGGER.warn("Horses list is null");
             throw new IllegalArgumentException("Horses cannot be null.");
         } else if (horses.isEmpty()) {
             LOGGER.error("Horses list is empty");
@@ -22,7 +22,7 @@ public class Hippodrome {
         }
 
         this.horses = horses;
-        LOGGER.debug("створення Hippodrome, коней [{}]", horses.size());
+        LOGGER.info("створення Hippodrome, коней [{}]", horses.size());
     }
 
     public List<Horse> getHorses() {

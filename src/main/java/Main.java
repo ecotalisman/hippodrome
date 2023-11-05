@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         List<Horse> horses = List.of(
                 new Horse("Bucephalus", 2.4),
                 new Horse("Ace of Spades", 2.5),
@@ -24,8 +24,15 @@ public class Main {
 
         for (int i = 0; i < 100; i++) {
             hippodrome.move();
-            watch(hippodrome);
-            TimeUnit.MILLISECONDS.sleep(200);
+            try {
+                watch(hippodrome);
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.error("Thread was interrupted", e);
+            } catch (Exception e) {
+                LOGGER.error("An error occurred while watching the race", e);
+            }
         }
 
         String winnerName = hippodrome.getWinner().getName();
